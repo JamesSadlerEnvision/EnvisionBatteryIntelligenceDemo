@@ -1,10 +1,7 @@
 import streamlit as st
-import pickle
-from pathlib import Path
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-import streamlit_authenticator as stauth
 
 st.set_page_config(layout="wide")
 
