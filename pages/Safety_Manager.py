@@ -11,30 +11,16 @@ st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center;'>Battery Performance Manager POC Experiment</h1>", unsafe_allow_html=True)
 
 df = pd.read_csv('data/DemoBatteryData.csv', index_col = 0, parse_dates = ['datetime'])
-capacity_df = pd.read_csv('data/DemoCapacityData.csv', index_col = 0, parse_dates = ['datetime'])
 
 battery = st.selectbox(
     'Battery:',
     ['B0005', 'B0006', 'B0007', 'B0018', 'B0025']
     )
 source = df[(df.battery == battery)]
-sourceCapacity = capacity_df[(capacity_df.battery == battery)]
 
 
-fig = px.line(source[['datetime', 'voltage_measured']].resample('5h', on = 'datetime').mean().reset_index(), x = 'datetime', y = 'voltage_measured', title='Average Measured Voltage Across Battery Lifetime')
+fig = px.line(source[['datetime', 'voltage_measured']].resample('1h', on = 'datetime').mean().dropna().reset_index(), x = 'datetime', y = 'voltage_measured', title='Measured Voltage Across Battery Lifetime')
 st.plotly_chart(fig, use_container_width=True)
-
-col1, col2 = st.columns(2)
-with col1:
-    fig6 = px.line(sourceCapacity, x = 'cycle', y = 'capacity', title='Capacity of Battery Againt Cycle')
-    fig6.update_traces(line_color='red', line_width=3)
-    st.plotly_chart(fig6, use_container_width=True)
-with col2:
-    fig7 = px.line(sourceCapacity[['datetime', 'capacity']].resample('12h', on='datetime').mean().reset_index(), x = 'datetime', y = 'capacity', title='Capacity of Battery Againt Time')
-    fig7.update_traces(line_color='red', line_width=3)
-    st.plotly_chart(fig7, use_container_width=True)
-
-st.markdown("<h4 style='text-align: center;'>Measuring Performance Across Cycles</h4>", unsafe_allow_html=True)
 
 
 cycles = st.multiselect(
