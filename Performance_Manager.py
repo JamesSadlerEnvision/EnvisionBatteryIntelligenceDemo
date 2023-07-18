@@ -3,6 +3,7 @@ import streamlit as st
 import plotly.express as px
 
 st.set_page_config(layout="wide")
+
 st.markdown("<h1 style='text-align: center;'>Battery Performance Manager POC Experiment</h1>", unsafe_allow_html=True)
 
 df = pd.read_csv('data/DemoBatteryData.csv', index_col = 0, parse_dates = ['datetime'])
@@ -38,6 +39,3 @@ with col2:
     st.plotly_chart(fig4, use_container_width=True)
     fig5 = px.line(source[source.cycle.isin(cycles)], x = 'time', y = 'current_measured', title='Measured Current Across Cycle Time', color = 'cycle')
     st.plotly_chart(fig5, use_container_width=True)
-
-
-
