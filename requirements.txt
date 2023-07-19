@@ -1,5 +1,5 @@
 pandas==2.0.3
 plotly==5.15.0
 xgboost==1.7.6
-sklearn==1.2.2
+sklearn==1.1.2
 joblib==1.1.1
