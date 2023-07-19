@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 
 st.set_page_config(layout="wide")
 
@@ -16,6 +17,20 @@ battery = st.selectbox(
     )
 source = df[(df.battery == battery)]
 sourceCapacity = capacity_df[(capacity_df.battery == battery)]
+
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    fig10 = go.Figure(go.Indicator(
+    mode = "gauge+number",
+    value = source[source.battery == battery].capacity.iloc[-1],
+    title = {'text': "Battery Capacity (Ahr)"},
+    domain = {'x': [0, 1], 'y': [0, 1]}
+    ))
+    st.plotly_chart(fig10, use_container_width=True)
+
+
 
 
 fig = px.line(source[['datetime', 'voltage_measured']].resample('5h', on = 'datetime').mean().reset_index(), x = 'datetime', y = 'voltage_measured', title='Average Measured Voltage Across Battery Lifetime')
