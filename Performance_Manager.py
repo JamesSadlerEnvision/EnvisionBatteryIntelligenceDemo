@@ -23,13 +23,17 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     fig10 = go.Figure(go.Indicator(
-    mode = "gauge+number",
-    value = source[source.battery == battery].capacity.iloc[-1],
-    title = {'text': "Battery Capacity (Ahr)"},
-    domain = {'x': [0, 1], 'y': [0, 1]}
+        mode = "gauge+number",
+        value = source[source.battery == battery].capacity.iloc[-1],
+        title = {'text': "Current Battery Capacity (Ahr)"},
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        gauge = {'axis': {'range': [None, 2]}}
+
     ))
     st.plotly_chart(fig10, use_container_width=True)
 
+with col2:
+    pass
 
 
 
