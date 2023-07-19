@@ -1,13 +1,16 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import streamlit as st
 import plotly.express as px
+import pickle 
+import joblib
 
 st.set_page_config(layout="wide")
 
 st.markdown("<h1 style='text-align: center;'>Health Manager POC Experiment</h1>", unsafe_allow_html=True)
 
-#@st.cache_data
+@st.cache_data
 def load_data():
     df = pd.read_csv('data/DemoBatteryData.csv', index_col = 0, parse_dates = ['datetime'])
     capacity_df = pd.read_csv('data/DemoCapacityData.csv', index_col = 0, parse_dates = ['datetime'])
@@ -18,7 +21,7 @@ df, capacity_df = load_data()
 capacity_df = capacity_df[capacity_df.battery.isin(['B0005', 'B0006', 'B0007'])]
 
 
-#@st.cache_data
+@st.cache_data
 def pivot_capacity(capacity_df):
     capacity_pivot = capacity_df.pivot(index = 'datetime', columns = 'battery', values = 'capacity')
     total_capacity_og = capacity_pivot.iloc[0].sum()
@@ -41,7 +44,7 @@ with st.container():
 
 
 batteries = st.multiselect(
-    'Battery:',
+    'Batteries:',
     ['B0005', 'B0006', 'B0007'],
     default = 'B0005'
     )
@@ -57,17 +60,35 @@ capacity_df = capacity_df[capacity_df.battery.isin(batteries)]
 
 capacity_df['SOH'] = 100*capacity_df['capacity'] / capacity_df['og_capacity']
 
-
 col1, col2 = st.columns(2)
 
 with col1:
+    
     fig2 = px.line(capacity_df, x="datetime", y="SOH", color='battery')
-    fig2.update_layout(title_text='Module SOH', title_x=0.5)
+    fig2.update_layout(title_text='Module SOH Over Time', title_x=0.5)
     st.plotly_chart(fig2, use_container_width=True)
 
 
 with col2:
     fig3 = px.line(capacity_df, x="cycle", y="SOH", color='battery')
-    fig3.update_layout(title_text='Module SOH', title_x=0.5)
+    fig3.update_layout(title_text='Module SOH over Cycles', title_x=0.5)
     st.plotly_chart(fig3, use_container_width=True)
 
+
+st.markdown("<h3 style='text-align: center;'>Module Aging Analysis</h3>", unsafe_allow_html=True)
+
+model = pickle.load(open('models/xgb_reg.pkl', "rb"))
+scaler = joblib.load('models/scaler.save')
+
+battery = st.selectbox(
+    'Select Module:',
+    ['B0005', 'B0006', 'B0007']
+    )
+
+input_features = df[df.battery == battery]
+features_list = ['cycle','voltage_measured','current_measured','temperature_measured','voltage_load']
+inputs_scaled = scaler.transform(input_features[features_list].iloc[[-1]])
+pred = model.predict(inputs_scaled)[0]
+
+st.write(np.round(pred, 1))
+st.metric("SOH", f"{np.round(pred, 1)}%", "-1.1%")
