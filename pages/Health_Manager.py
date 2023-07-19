@@ -40,10 +40,10 @@ with st.container():
     st.plotly_chart(fig, use_container_width=True)
 
 
-battery = st.multiselect(
+batteries = st.multiselect(
     'Battery:',
     ['B0005', 'B0006', 'B0007']
     )
-source = capacity_pivot[capacity_pivot.columns.intersection(battery)]
+source = capacity_pivot[capacity_pivot.columns.intersection(batteries)]
 
 st.write(source)
