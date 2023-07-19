@@ -40,8 +40,34 @@ with st.container():
     st.plotly_chart(fig, use_container_width=True)
 
 
-battery = st.multiselect(
+batteries = st.multiselect(
     'Battery:',
-    ['B0005', 'B0006', 'B0007']
+    ['B0005', 'B0006', 'B0007'],
+    default = 'B0005'
     )
-source = capacity_pivot[capacity_pivot.columns.intersection(battery)]
+source = capacity_pivot[capacity_pivot.columns.intersection(batteries)]
+
+
+# Now determine SOH by battery. First calculate og capacity and then merge
+# to get SOH per og_capacity throughout lifetime
+og_capacities = capacity_df[['battery','capacity']].groupby('battery').nth(0)
+og_capacities = og_capacities.rename(columns = {'capacity': 'og_capacity'})
+capacity_df = capacity_df.merge(og_capacities)
+capacity_df = capacity_df[capacity_df.battery.isin(batteries)]
+
+capacity_df['SOH'] = 100*capacity_df['capacity'] / capacity_df['og_capacity']
+
+
+col1, col2 = st.columns(2)
+
+with col1:
+    fig2 = px.line(capacity_df, x="datetime", y="SOH", color='battery')
+    fig2.update_layout(title_text='Module SOH', title_x=0.5)
+    st.plotly_chart(fig2, use_container_width=True)
+
+
+with col2:
+    fig3 = px.line(capacity_df, x="cycle", y="SOH", color='battery')
+    fig3.update_layout(title_text='Module SOH', title_x=0.5)
+    st.plotly_chart(fig3, use_container_width=True)
+
