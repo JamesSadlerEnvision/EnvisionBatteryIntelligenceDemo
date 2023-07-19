@@ -45,3 +45,5 @@ battery = st.multiselect(
     ['B0005', 'B0006', 'B0007']
     )
 source = capacity_pivot[capacity_pivot.columns.intersection(battery)]
+
+st.write(source)
