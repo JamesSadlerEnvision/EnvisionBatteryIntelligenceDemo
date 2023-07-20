@@ -33,7 +33,16 @@ with col1:
     st.plotly_chart(fig10, use_container_width=True)
 
 with col2:
-    pass
+    st.markdown("<h5 style='text-align: center;'>SOC (%)</h5>", unsafe_allow_html=True)
+
+    fig12 = go.Figure(go.Indicator(
+    mode = "number+gauge",
+    gauge = {'shape': "bullet" ,'axis': {'range': [None, 100]}},
+    value = 100*source[source.battery == battery].capacity.iloc[-1]/2.2,
+    domain = {'x': [0.2, 1], 'y': [0.1, 0.9]}
+))
+    fig12.update_layout(title={'text': 'Module SOC (%)', 'x': 0.5, 'y': 0.9})
+    st.plotly_chart(fig12, use_container_width=True)
 
 
 
