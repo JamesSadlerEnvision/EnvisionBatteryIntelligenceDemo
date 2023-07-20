@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -9,7 +8,7 @@ st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center;'>Safety Manager POC Experiment</h1>", unsafe_allow_html=True)
 
 df = pd.read_csv('data/DemoBatteryData.csv', index_col = 0, parse_dates = ['datetime'])
-soc_df = pd.read_csv('data/SOC_Data.csv', index_col = 0, parse_dates = ['datetime'])
+soc_df = pd.read_csv('data/SOC_data.csv', index_col = 0, parse_dates = ['datetime'])
 safety_df = pd.read_csv('data/safety_data.csv')
 temp_df = pd.read_csv('data/temp_data.csv')
 
