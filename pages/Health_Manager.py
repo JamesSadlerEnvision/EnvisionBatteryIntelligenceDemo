@@ -77,18 +77,18 @@ with col2:
 
 st.markdown("<h3 style='text-align: center;'>Module Aging Analysis</h3>", unsafe_allow_html=True)
 
-model = pickle.load(open('models/xgb_reg.pkl', "rb"))
-scaler = joblib.load('models/scaler.save')
+# model = pickle.load(open('models/xgb_reg.pkl', "rb"))
+# scaler = joblib.load('models/scaler.save')
 
-battery = st.selectbox(
-    'Select Module:',
-    ['B0005', 'B0006', 'B0007']
-    )
+# battery = st.selectbox(
+#     'Select Module:',
+#     ['B0005', 'B0006', 'B0007']
+#     )
 
-input_features = df[df.battery == battery]
-features_list = ['cycle','voltage_measured','current_measured','temperature_measured','voltage_load']
-inputs_scaled = scaler.transform(input_features[features_list].iloc[[-1]])
-pred = model.predict(inputs_scaled)[0]
+# input_features = df[df.battery == battery]
+# features_list = ['cycle','voltage_measured','current_measured','temperature_measured','voltage_load']
+# inputs_scaled = scaler.transform(input_features[features_list].iloc[[-1]])
+# pred = model.predict(inputs_scaled)[0]
 
-st.write(np.round(pred, 1))
-st.metric("SOH", f"{np.round(pred, 1)}%", "-1.1%")
+# st.write(np.round(pred, 1))
+# st.metric("SOH", f"{np.round(pred, 1)}%", "-1.1%")
