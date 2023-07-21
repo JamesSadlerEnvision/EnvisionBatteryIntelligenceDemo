@@ -19,31 +19,30 @@ source = df[(df.battery == battery)]
 sourceCapacity = capacity_df[(capacity_df.battery == battery)]
 
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
     fig10 = go.Figure(go.Indicator(
         mode = "gauge+number",
         value = source[source.battery == battery].capacity.iloc[-1],
-        title = {'text': "Current Battery Capacity (Ahr)"},
+        #title = {'text': "Current Battery Capacity (Ahr)"},
         domain = {'x': [0, 1], 'y': [0, 1]},
         gauge = {'axis': {'range': [None, 2]}}
 
     ))
+    fig10.update_layout(title={'text': 'Current Battery Capacity (Ahr)', 'y': 0.9})
+
     st.plotly_chart(fig10, use_container_width=True)
 
 with col2:
-    st.markdown("<h5 style='text-align: center;'>SOC (%)</h5>", unsafe_allow_html=True)
-
     fig12 = go.Figure(go.Indicator(
     mode = "number+gauge",
     gauge = {'shape': "bullet" ,'axis': {'range': [None, 100]}},
     value = 100*source[source.battery == battery].capacity.iloc[-1]/2.2,
     domain = {'x': [0.2, 1], 'y': [0.1, 0.9]}
 ))
-    fig12.update_layout(title={'text': 'Module SOC (%)', 'x': 0.5, 'y': 0.9})
+    fig12.update_layout(title={'text': 'Module SOC (%)', 'y': 0.9})
     st.plotly_chart(fig12, use_container_width=True)
-
 
 
 fig = px.line(source[['datetime', 'voltage_measured']].resample('5h', on = 'datetime').mean().reset_index(), x = 'datetime', y = 'voltage_measured', title='Average Measured Voltage Across Battery Lifetime')
