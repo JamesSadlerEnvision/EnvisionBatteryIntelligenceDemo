@@ -43,7 +43,7 @@ with st.container():
 
 
 batteries = st.multiselect(
-    'Batteries:',
+    'Modules:',
     ['B0005', 'B0006', 'B0007'],
     default = 'B0005'
     )
@@ -74,7 +74,7 @@ with col2:
     st.plotly_chart(fig3, use_container_width=True)
 
 
-st.markdown("<h3 style='text-align: center;'>Module Aging Analysis</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>Module Level Aging Analysis</h3>", unsafe_allow_html=True)
 
 model = pickle.load(open('models/xgb_reg.pkl', "rb"))
 scaler = pickle.load(open('models/scaler.pkl', "rb"))

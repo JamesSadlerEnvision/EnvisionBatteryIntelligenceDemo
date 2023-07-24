@@ -12,7 +12,7 @@ df = pd.read_csv('data/DemoBatteryData.csv', index_col = 0, parse_dates = ['date
 capacity_df = pd.read_csv('data/DemoCapacityData.csv', index_col = 0, parse_dates = ['datetime'])
 
 battery = st.selectbox(
-    'Battery:',
+    'Module:',
     ['B0005', 'B0006', 'B0007', 'B0018', 'B0025']
     )
 source = df[(df.battery == battery)]

@@ -9,7 +9,7 @@ st.set_page_config(layout="wide")
 
 st.markdown("<h1 style='text-align: center;'>Trading Optimisations</h1>", unsafe_allow_html=True)
 
-#@st.cache_data
+@st.cache_data
 def load_data():
     trading = pd.read_csv('data/trading.csv', parse_dates=['DATE_time'])
     
