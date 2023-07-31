@@ -19,7 +19,7 @@ source = df[(df.battery == battery)]
 sourceCapacity = capacity_df[(capacity_df.battery == battery)]
 
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     fig10 = go.Figure(go.Indicator(
@@ -44,6 +44,9 @@ with col2:
     fig12.update_layout(title={'text': 'Module SOC (%)', 'y': 0.9})
     st.plotly_chart(fig12, use_container_width=True)
 
+with col3:
+    
+    st.metric("Cycle Count", f"{source.cycle.iloc[-1]}")
 
 fig = px.line(source[['datetime', 'voltage_measured']].resample('5h', on = 'datetime').mean().reset_index(), x = 'datetime', y = 'voltage_measured', title='Average Measured Voltage Across Battery Lifetime')
 st.plotly_chart(fig, use_container_width=True)

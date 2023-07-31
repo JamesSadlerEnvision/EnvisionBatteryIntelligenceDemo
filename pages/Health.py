@@ -59,7 +59,7 @@ capacity_df = capacity_df[capacity_df.battery.isin(batteries)]
 
 capacity_df['SOH'] = 100*capacity_df['capacity'] / capacity_df['og_capacity']
 
-col1, col2 = st.columns(2)
+col1, col2= st.columns(3)
 
 with col1:
     
@@ -72,6 +72,7 @@ with col2:
     fig3 = px.line(capacity_df, x="cycle", y="SOH", color='battery')
     fig3.update_layout(title_text='Module SOH over Cycles', title_x=0.5)
     st.plotly_chart(fig3, use_container_width=True)
+
 
 
 st.markdown("<h3 style='text-align: center;'>Module Level Aging Analysis</h3>", unsafe_allow_html=True)
